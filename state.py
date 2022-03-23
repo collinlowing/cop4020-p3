@@ -3,11 +3,17 @@ class State:
     __accept = False
 
     def __init__(self, number, accept):
-        State.__number = number
-        State.__accept = accept
+        self.__number = number
+        self.__accept = accept
 
     def get_number(self):
-        return State.__number
+        return self.__number
 
     def is_accept_state(self):
-        return State.__accept
+        return self.__accept
+
+    def print(self):
+        if self.__accept:
+            print("State " + self.__number + " is accept state")
+        else:
+            print("State " + self.__number + " is not accept state")

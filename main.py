@@ -13,15 +13,20 @@ if len(tokens) != 5:
 
 alphabet = parser.parse_comma(tokens[1])
 
+# for testing
 print(alphabet)
 
 transitions = parser.parse_transitions(tokens[2])
 
+# for testing
 print(transitions)
 
 # checks if transitions are defined in alphabet
 for transition in transitions:
+
+    # for testing
     print(transition[-1])
+
     if transition[-1] not in alphabet:
         print("alpha" + transition[-1] + "is not defined")
     # else:
@@ -36,10 +41,49 @@ if argc < 2:
 input_filename = sys.argv[1]
 file = open(input_filename, "r")
 input_string = file.readline()
+
+# for testing
 print(input_string)
+
 file.close()
 
 fsa = fsa.FSA()
 
-print(fsa.create_state(0, False))
-print(fsa.create_state(0, False))
+states = []
+
+for transition in transitions:
+    if transition[0] not in states:
+        states.append(transition[0])
+    if transition[1] not in states:
+        states.append(transition[1])
+
+# for testing
+print(states)
+
+accept_states = parser.parse_comma(tokens[4])
+
+# for testing
+print(accept_states)
+
+state_nodes = []
+
+for state in states:
+    if state in accept_states:
+        state_nodes.append(fsa.create_state(state, True))
+    else:
+        state_nodes.append(fsa.create_state(state, False))
+
+# for testing
+for state_node in state_nodes:
+    state_node.print()
+
+transition_nodes = []
+
+for transition in transitions:
+    start_state = fsa.search_state(state_nodes, transition[0])
+    end_state = fsa.search_state(state_nodes, transition[1])
+    transition_nodes.append(fsa.create_transition(start_state, end_state, transition[2]))
+
+# print transitions for testing
+for transition_node in transition_nodes:
+    transition_node.print()

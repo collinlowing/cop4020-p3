@@ -4,15 +4,20 @@ class Transition:
     __alpha = None
 
     def __init__(self, start_state, end_state, alpha):
-        Transition.__start_state = start_state
-        Transition.__end_state = end_state
-        Transition.__alpha = alpha
+        self.__start_state = start_state
+        self.__end_state = end_state
+        self.__alpha = alpha
 
     def get_start_state(self):
-        return Transition.__start_state
+        return self.__start_state
 
     def get_end_state(self):
-        return Transition.__end_state
+        return self.__end_state
 
     def get_alpha(self):
-        return Transition.__alpha
+        return self.__alpha
+
+    def print(self):
+        print("Transition: " + self.__start_state.get_number() + " : "
+              + self.__end_state.get_number() + " : "
+              + self.__alpha)
