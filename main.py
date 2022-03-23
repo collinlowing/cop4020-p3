@@ -13,19 +13,19 @@ if len(tokens) != 5:
 
 alphabet = parser.parse_comma(tokens[1])
 
-# for testing
-print(alphabet)
+# # for testing
+# print(alphabet)
 
 transitions = parser.parse_transitions(tokens[2])
 
-# for testing
-print(transitions)
+# # for testing
+# print(transitions)
 
 # checks if transitions are defined in alphabet
 for transition in transitions:
 
-    # for testing
-    print(transition[-1])
+    # # for testing
+    # print(transition[-1])
 
     if transition[-1] not in alphabet:
         print("alpha" + transition[-1] + "is not defined")
@@ -42,8 +42,8 @@ input_filename = sys.argv[1]
 file = open(input_filename, "r")
 input_string = file.readline()
 
-# for testing
-print(input_string)
+# # for testing
+# print(input_string)
 
 file.close()
 
@@ -57,13 +57,13 @@ for transition in transitions:
     if transition[1] not in states:
         states.append(transition[1])
 
-# for testing
-print(states)
+# # for testing
+# print(states)
 
 accept_states = parser.parse_comma(tokens[4])
 
-# for testing
-print(accept_states)
+# # for testing
+# print(accept_states)
 
 state_nodes = []
 
@@ -73,9 +73,9 @@ for state in states:
     else:
         state_nodes.append(fsa.create_state(state, False))
 
-# for testing
-for state_node in state_nodes:
-    state_node.print()
+# # for testing
+# for state_node in state_nodes:
+#     state_node.print()
 
 transition_nodes = []
 
@@ -84,6 +84,18 @@ for transition in transitions:
     end_state = fsa.search_state(state_nodes, transition[1])
     transition_nodes.append(fsa.create_transition(start_state, end_state, transition[2]))
 
-# print transitions for testing
-for transition_node in transition_nodes:
-    transition_node.print()
+# # print transitions for testing
+# for transition_node in transition_nodes:
+#     transition_node.print()
+
+start_state_number = tokens[3]
+
+start_state = fsa.search_state(state_nodes, start_state_number)
+end_state = fsa.traverse_fsa(start_state, transition_nodes, input_string)
+
+end_state.print()
+
+if end_state.is_accept_state():
+    print("input string is legal for given FSA")
+else:
+    print("input string is illegal for given FSA")
