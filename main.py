@@ -1,6 +1,8 @@
 import sys
 import parse
 
+import fsa
+
 parser = parse.Parser('fsa.txt')
 
 tokens = parser.read_tokens()
@@ -36,3 +38,8 @@ file = open(input_filename, "r")
 input_string = file.readline()
 print(input_string)
 file.close()
+
+fsa = fsa.FSA()
+
+print(fsa.create_state(0, False))
+print(fsa.create_state(0, False))
