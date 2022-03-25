@@ -1,7 +1,24 @@
 import sys
 import parse
-
 import fsa
+import draw_fsa
+
+def parse_file():
+    pass
+
+def draw():
+    transition_out = []
+    transition_in = []
+    for state_node in state_nodes:
+        for transition in transitions:
+            if state_node.get_number() == transition[0]:
+                transition_out.append(transition[2])  # put transition character in list
+            if state_node.get_number() == transition[1]:
+                transition_in.append(transition[2])  # put transition character in list
+        state_node.set_in_characters(transition_in)
+        state_node.set_out_characters(transition_out)
+        transition_in.clear()
+        transition_out.clear()
 
 parser = parse.Parser('fsa.txt')
 
@@ -99,3 +116,5 @@ if end_state.is_accept_state():
     print("input string is legal for given FSA")
 else:
     print("input string is illegal for given FSA")
+
+
