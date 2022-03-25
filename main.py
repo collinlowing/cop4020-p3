@@ -1,7 +1,8 @@
 import sys
 import parse
 import fsa
-import draw_fsa
+import draw_fsa as draw
+from draw_fsa import tk
 
 fsa_filename = 'fsa.txt'
 parser = parse.Parser(fsa_filename)
@@ -106,7 +107,7 @@ def check_valid_string():
     start_state = fsa.search_state(state_nodes, start_state_number)
     end_state = fsa.traverse_fsa(start_state, transition_nodes, input_string)
 
-    end_state.print()
+    # end_state.print()
 
     if end_state.is_accept_state():
         print("input string is legal for given FSA")
@@ -114,7 +115,7 @@ def check_valid_string():
         print("input string is illegal for given FSA")
 
 
-def draw():
+def generate_map():
     transition_out = []
     transition_in = []
     for state_node in state_nodes:
@@ -128,10 +129,12 @@ def draw():
         transition_in.clear()
         transition_out.clear()
 
+    draw.start()
+
 
 parse_fsa()
 check_fsa()
 read_string()
 load_fsa()
 check_valid_string()
-draw()
+generate_map()

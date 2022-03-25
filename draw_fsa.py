@@ -1,6 +1,64 @@
 # Relatively prettier and more reusable
 import tkinter as tk
 
+canvas_width = 600
+canvas_height = 1000
+
+offset = 50
+label_offset = -10
+
+diameter = 40
+radius = diameter / 2
+line_length = 200 - radius
+
+pos_x = offset
+pos_y = offset
+
+num_vertical_states = 0
+
+root = tk.Tk()
+canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, borderwidth=0, highlightthickness=0, bg="white")
+
+
+def start():
+    global canvas_width
+    global canvas_height
+
+    global offset
+    global label_offset
+
+    global diameter
+    global radius
+    global line_length
+
+    global pos_x
+    global pos_y
+
+    global num_vertical_states
+
+    global root
+    global canvas
+
+    # draw starting line
+    draw_vertical_line(pos_x + radius, pos_y - offset / 2, pos_x + radius, pos_y, ' ')
+
+    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_x + line_length, 'a')  # Left to Right
+    draw_horizontal_line(pos_x + line_length, pos_y + radius, pos_x + diameter, pos_y + radius, 'b')  # Top to Bottom
+
+    draw_semi_circle_left(pos_x, pos_y + line_length * num_vertical_states, 'x')
+    num_vertical_states = num_vertical_states + 1
+    draw_semi_circle_right(pos_x, pos_y + line_length * num_vertical_states, 'a')
+
+    draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '0')
+    pos_y = pos_y + line_length
+    draw_accept_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '1')
+    pos_y = pos_y - line_length
+    pos_x = pos_x + line_length
+    draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '3')
+
+    root.wm_title("Circles, lines, and Arcs")
+    root.mainloop()
+
 
 def average_pos(p1, p2):
     sum = p1 + p2
@@ -44,6 +102,7 @@ def draw_semi_circle_left(x1, y1, label):
     text = canvas.create_text(x1 + label_offset, y1 + radius, text=label)
     line = canvas.create_line(x1, y1 + radius, x1, y1 - 1, width=2, arrow=tk.LAST)
 
+
 def draw_semi_circle_right(x1, y1, label):
     x2 = x1 + diameter + radius
     y2 = y1 + diameter
@@ -54,40 +113,3 @@ def draw_semi_circle_right(x1, y1, label):
     line = canvas.create_line(x2, y2 - radius, x2, y2 - 1, width=2, arrow=tk.LAST)
 
 
-canvas_width = 600
-canvas_height = 1000
-
-offset = 50
-label_offset = -10
-
-diameter = 40
-radius = diameter / 2
-line_length = 200 - radius
-
-pos_x = offset
-pos_y = offset
-
-num_vertical_states = 0
-
-root = tk.Tk()
-canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, borderwidth=0, highlightthickness=0, bg="white")
-
-# draw starting line
-draw_vertical_line(pos_x + radius, pos_y - offset / 2, pos_x + radius, pos_y, '')
-
-draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_x + line_length, 'a')      # Left to Right
-draw_horizontal_line(pos_x + line_length, pos_y + radius, pos_x + diameter, pos_y + radius, 'b')    # Top to Bottom
-
-draw_semi_circle_left(pos_x, pos_y + line_length * num_vertical_states, 'x')
-num_vertical_states = num_vertical_states + 1
-draw_semi_circle_right(pos_x, pos_y + line_length * num_vertical_states, 'a')
-
-draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '0')
-pos_y = pos_y + line_length
-draw_accept_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '1')
-pos_y = pos_y - line_length
-pos_x = pos_x + line_length
-draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '3')
-
-root.wm_title("Circles, lines, and Arcs")
-root.mainloop()
