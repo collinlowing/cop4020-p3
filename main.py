@@ -102,6 +102,17 @@ def load_fsa():
 
 
 def check_valid_string():
+    alphabet_string = ""
+    in_alphabet = False
+    for alpha in alphabet:
+        alphabet_string = alphabet_string + alpha
+
+    for char in input_string:
+        if char in alphabet_string:
+            in_alphabet = True
+        else:
+            in_alphabet = False
+
     start_state_number = tokens[3]
 
     start_state = fsa.search_state(state_nodes, start_state_number)
@@ -109,7 +120,7 @@ def check_valid_string():
 
     # end_state.print()
 
-    if end_state.is_accept_state():
+    if end_state.is_accept_state() and in_alphabet:
         print("input string is legal for given FSA")
     else:
         print("input string is illegal for given FSA")

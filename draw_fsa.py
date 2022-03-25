@@ -56,7 +56,7 @@ def start():
     pos_x = pos_x + line_length
     draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '3')
 
-    root.wm_title("Circles, lines, and Arcs")
+    root.wm_title("FSA")
     root.mainloop()
 
 
