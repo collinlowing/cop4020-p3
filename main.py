@@ -15,8 +15,8 @@ state_nodes = []
 transition_nodes = []
 input_string = ''
 
-def parse_fsa():
 
+def parse_fsa():
     global tokens
     tokens = parser.read_tokens()
 
@@ -67,7 +67,6 @@ def read_string():
 
 
 def load_fsa():
-
     for transition in transitions:
         if transition[0] not in states:
             states.append(transition[0])
@@ -127,20 +126,7 @@ def check_valid_string():
 
 
 def generate_map():
-    transition_out = []
-    transition_in = []
-    for state_node in state_nodes:
-        for transition in transitions:
-            if state_node.get_number() == transition[0]:
-                transition_out.append(transition[2])  # put transition character in list
-            if state_node.get_number() == transition[1]:
-                transition_in.append(transition[2])  # put transition character in list
-        state_node.set_in_characters(transition_in)
-        state_node.set_out_characters(transition_out)
-        transition_in.clear()
-        transition_out.clear()
-
-    draw.start()
+    draw.start(tokens[3], state_nodes, transition_nodes)
 
 
 parse_fsa()

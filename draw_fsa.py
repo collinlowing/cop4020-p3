@@ -1,5 +1,6 @@
 # Relatively prettier and more reusable
 import tkinter as tk
+import fsa
 
 canvas_width = 600
 canvas_height = 1000
@@ -14,13 +15,11 @@ line_length = 200 - radius
 pos_x = offset
 pos_y = offset
 
-num_vertical_states = 0
-
 root = tk.Tk()
 canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, borderwidth=0, highlightthickness=0, bg="white")
 
 
-def start():
+def start(start_state, states, transitions):
     global canvas_width
     global canvas_height
 
@@ -34,27 +33,41 @@ def start():
     global pos_x
     global pos_y
 
-    global num_vertical_states
-
     global root
     global canvas
 
     # draw starting line
     draw_vertical_line(pos_x + radius, pos_y - offset / 2, pos_x + radius, pos_y, ' ')
 
-    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_x + line_length, 'a')  # Left to Right
-    draw_horizontal_line(pos_x + line_length, pos_y + radius, pos_x + diameter, pos_y + radius, 'b')  # Top to Bottom
+    # draw state transitions
+    draw_semi_circle_right(pos_x, pos_y, 'x')
+    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_y + line_length, 'y')
+    pos_y = pos_y + line_length
+    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_y + line_length, 'x')
+    pos_y = pos_y + line_length
+    draw_semi_circle_right(pos_x, pos_y, 'x')
+    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_y + line_length, 'y')
+    pos_y = pos_y + line_length
+    draw_semi_circle_right(pos_x, pos_y, 'x')
+    draw_vertical_line(pos_x + radius, pos_y + diameter, pos_x + radius, pos_y + line_length, 'z')
+    pos_y = pos_y + line_length
+    draw_semi_circle_right(pos_x, pos_y, 'x')
 
-    draw_semi_circle_left(pos_x, pos_y + line_length * num_vertical_states, 'x')
-    num_vertical_states = num_vertical_states + 1
-    draw_semi_circle_right(pos_x, pos_y + line_length * num_vertical_states, 'a')
+    draw_prev_transition(pos_x, pos_y + radius, 4, 1, 'a')
 
+    # go back to the start
+    pos_y = offset
+
+    # draw states
     draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '0')
     pos_y = pos_y + line_length
     draw_accept_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '1')
-    pos_y = pos_y - line_length
-    pos_x = pos_x + line_length
-    draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '3')
+    pos_y = pos_y + line_length
+    draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '2')
+    pos_y = pos_y + line_length
+    draw_accept_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '3')
+    pos_y = pos_y + line_length
+    draw_state(pos_x, pos_y, pos_x + diameter, pos_y + diameter, '4')
 
     root.wm_title("FSA")
     root.mainloop()
@@ -87,22 +100,6 @@ def draw_vertical_line(x1, y1, x2, y2, label):
     text = canvas.create_text(x1 + label_offset, avg_y, text=label)
 
 
-def draw_horizontal_line(x1, y1, x2, y2, label):
-    avg_x = average_pos(x1, x2)
-    line = canvas.create_line(x1, y1, x2, y2, width=2, arrow=tk.LAST)
-    text = canvas.create_text(avg_x, y1 + label_offset, text=label)
-
-
-def draw_semi_circle_left(x1, y1, label):
-    x2 = x1 + radius
-    y2 = y1 + diameter
-    x1 = x1 - radius
-
-    cirl = canvas.create_oval(x1, y1, x2, y2)
-    text = canvas.create_text(x1 + label_offset, y1 + radius, text=label)
-    line = canvas.create_line(x1, y1 + radius, x1, y1 - 1, width=2, arrow=tk.LAST)
-
-
 def draw_semi_circle_right(x1, y1, label):
     x2 = x1 + diameter + radius
     y2 = y1 + diameter
@@ -113,3 +110,12 @@ def draw_semi_circle_right(x1, y1, label):
     line = canvas.create_line(x2, y2 - radius, x2, y2 - 1, width=2, arrow=tk.LAST)
 
 
+def draw_prev_transition(x1, y1, state1, state2, label):
+    diff = state2 - state1
+    y2 = y1 + (line_length * diff)
+    x2 = x1
+    avg_y = average_pos(y1, y2)
+    line1 = canvas.create_line(x1, y1, x1 - 10, y1, width=2)
+    line2 = canvas.create_line(x1 - 10, y1, x2 - 10, y2, width=2)
+    line3 = canvas.create_line(x2 - 10, y2, x1, y2, width=2, arrow=tk.LAST)
+    text = canvas.create_text(x1 - 10 + label_offset, avg_y, text=label)

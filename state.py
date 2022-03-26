@@ -1,8 +1,6 @@
 class State:
     __number = None
     __accept = False
-    __in_chars = []
-    __out_chars = []
 
     def __init__(self, number, accept):
         self.__number = number
@@ -20,14 +18,3 @@ class State:
         else:
             print("State " + self.__number + " is not accept state")
 
-    def set_in_characters(self, in_chars):
-        self.__in_chars = in_chars
-
-    def get_in_characters(self):
-        return self.__in_chars
-
-    def set_out_characters(self, out_chars):
-        self.__out_chars = out_chars
-
-    def get_out_characters(self):
-        return self.__out_chars
